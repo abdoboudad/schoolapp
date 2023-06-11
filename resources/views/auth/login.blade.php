@@ -43,7 +43,7 @@
 
 				<!-- Content area -->
 				<div class="content">
-
+					
 					<!-- Simple login form -->
 					<form method='post' action='{{route("login")}}'>
                         @csrf

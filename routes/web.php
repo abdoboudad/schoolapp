@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('admin', [AdminController::class,'index'])->name('admin');
+Route::get('user/profile/{name}', [ProfileController::class,'profile'])->name('profile');
+
+Route::resource('admin/users',UserController::class);
 
 Auth::routes();
 
