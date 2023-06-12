@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -12,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return view('admin.users.users',['users'=>$users]);
     }
 
     /**
@@ -28,7 +31,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone'=>['required', 'string', 'max:255'],
+            'role'=>['required', 'string', 'max:255'],
+        ]);
+        User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'phone'=>$request['phone'],
+            'role'=>$request['role'],
+        ]);
+        return back()->with('success','Compte créé avec succès');
     }
 
     /**
@@ -42,24 +59,40 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($name)
     {
-        //
+        $user = User::where('name',$name)->first();
+        return view('admin.users.edit',compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $user)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone'=>['required', 'string', 'max:255'],
+            'role'=>['required', 'string', 'max:255'],
+        ]);
+        $user_edit = User::find($user);
+        $user_edit->name = $request->name;
+        $user_edit->password = $request->password;
+        $user_edit->email = $request->email;
+        $user_edit->phone = $request->phone;
+        $user_edit->role = $request->role;
+        $user_edit->save();
+        return redirect()->route('users.edit',$user_edit->name)->with('success','le compte a été modifier');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        User::find($id)->delete();
+        return back()->with('supprimer','le compte a été supprimer'); 
     }
 }

@@ -36,3 +36,4 @@ class UserFactory extends Factory
         ]);
     }
 }
+$userFactory = \App\Models\User::factory()->times(10)->create();

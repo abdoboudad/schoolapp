@@ -11,4 +11,15 @@ class ProfileController extends Controller
         $user = User::where('name',$name)->first();
         return view('admin.users.profile',compact('user'));
     }
+    public function status($id){
+        $user = User::find($id);
+        if($user->status === 'debloc'){
+            $user->status = 'bloc';
+            $user->save();
+        }else{
+            $user->status = 'debloc';
+            $user->save();
+        }
+        return redirect()->back()->with('success','le compte a été '.$user->status);
+    }
 }

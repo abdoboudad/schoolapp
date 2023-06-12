@@ -141,7 +141,7 @@
 								<li class="active"><a href={{ route('admin') }}><i class="icon-home4"></i> <span>Dashboard</span></a></li>
 								
 								<li>
-									<a href="#"><i class="icon-copy"></i> <span>Layouts</span></a>
+									<a href="#"><i class="icon-bookmark"></i> <span>Matériaux</span></a>
 									<ul>
 										<li><a href="index.html" id="layout1">Layout 1 <span class="label bg-warning-400">Current</span></a></li>
 										<li><a href="../../layout_2/LTR/index.html" id="layout2">Layout 2</a></li>
@@ -182,9 +182,12 @@
 								<li class="navigation-header"><span>Forms</span> <i class="icon-menu" title="Forms"></i></li>
 							
 								<li>
-									<a href="#"><i class="icon-footprint"></i> <span>utilisateurs</span></a>
+									<a href="#"><i class="icon-users"></i> <span>utilisateurs</span></a>
 									<ul>
-										<li><a href={{ route('users.create') }}>Créer compte </a></li>
+										<li><a href={{ route('users.index') }}> Gestion des utilisateurs
+										</a></li>
+
+										<li><a href={{ route('users.create') }}>Créer un compte </a></li>
 									</ul>
 								</li>
 							</ul>
