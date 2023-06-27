@@ -13,52 +13,70 @@
         <span class="text-semibold">{{ session('supprimer')  }}</span> 
         </div>
     @endif
-    <div class="row">
-        @forelse ($users as $user)
+    
+        
 
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-body">
-                <div class="media">
-                    <div class="media-body">
-                        <h6 class="media-heading"> {{ $user->name }} </h6>
-                        <span class="text-muted"> {{ $user->role }} </span>
-                    </div>
 
-                    <div class="media-right media-middle">
-                        <ul class="icons-list icons-list-vertical">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon-menu7"></i></a>
-                                <ul class="dropdown-menu dropdown-menu-right">
+
+
+
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr class="bg-teal-400">
+                <th>#</th>
+                <th>nom du utilisateur</th>
+                <th>role</th>
+                <th>action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($users as $user)
+                <tr>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->role }}</td>
+                    <td>
+                        <ul class="icons-list">
+                            <li class="text-primary-600"><a href={{ route('users.edit',$user->name) }}><i class="icon-pencil7"></i></a></li>
+                            <li class="text-danger-600">
+                                <form action="{{ route('users.destroy',$user->id) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" style="border: 0;background-color:transparent;"><i class="icon-trash"></i></button>                                
+                                </form> 
+                
+                            </li>
+                            <li class="dropdown text-teal-600">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="icon-cog7"></i>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
                                     <li><a href={{ route('profile',$user->name) }}><i class="icon-user pull-right"></i> Profil </a></li>
-                                    <li><a href={{ route('users.edit',$user->name) }}><i class="icon-pen pull-right"></i> Modifier </a></li>
-                                    <form action="{{ route('status', $user->id) }}" method="post">
-                                        @csrf
-                                        @if ($user->status === 'debloc')
-                                        <li><button type="submit" style="border: 0;background-color:transparent;padding:10px 15px;width:100%;text-align:start;"><i class="icon-user-block pull-right" ></i> Bloc </button></li>
-                                        @else
-                                        <li><button type="submit" style="border: 0;background-color:transparent;padding:10px 15px;width:100%;text-align:start;"><i class="icon-user-check pull-right"></i> débloquer </button></li>
-                                        @endif
-                                    </form>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <form action="{{ route('users.destroy',$user->id) }}" method="post">
+                                        
+                                        <form action="{{ route('status', $user->id) }}" method="post">
                                             @csrf
-                                            @method('delete')
-                                            <button type="submit" style="border: 0;background-color:transparent;padding:10px 15px;width:100%;text-align:start;" ><i class="icon-trash pull-right"></i>  supprimer </button>                                
-                                        </form>                                    
-                                    </li>
+
+                                            @if ($user->status === 'debloc')
+                                                <li><button type="submit" style="border: 0;background-color:transparent;padding:10px 15px;width:100%;text-align:start;"><i class="icon-user-block pull-right" ></i> Bloc </button></li>
+                                            @else
+                                                <li><button type="submit" style="border: 0;background-color:transparent;padding:10px 15px;width:100%;text-align:start;"><i class="icon-user-check pull-right"></i> débloquer </button></li>
+                                            @endif
+                                        </form>                                
                                 </ul>
                             </li>
                         </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @empty
-        
-        @endforelse
-    </div>
-        
+                        
+                    </td>
+                </tr>
+            @empty
+                
+            @endforelse
+    
+        </tbody>
+    
+    </table>
 
 
 @endsection

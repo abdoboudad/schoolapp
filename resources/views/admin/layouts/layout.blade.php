@@ -13,6 +13,8 @@
 	<link href={{ url('assets/css/core.css') }} rel="stylesheet" type="text/css">
 	<link href={{ url('assets/css/components.css') }} rel="stylesheet" type="text/css">
 	<link href={{ url('assets/css/colors.css') }} rel="stylesheet" type="text/css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+
 	<!-- /global stylesheets -->
 
 	<!-- Core JS files -->
@@ -33,6 +35,8 @@
 
 	<script type="text/javascript" src={{ url('assets/js/core/app.js') }}></script>
 	<script type="text/javascript" src={{ url('assets/js/pages/dashboard.js') }}></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
 	<!-- /theme JS files -->
 
 </head>
@@ -56,8 +60,6 @@
 
 				
 			</ul>
-
-			<p class="navbar-text"><span class="label bg-success-400">Online</span></p>
 
 			<ul class="nav navbar-nav navbar-right">		
 
@@ -121,7 +123,7 @@
 								<div class="media-right media-middle">
 									<ul class="icons-list">
 										<li>
-											<a href="#"><i class="icon-cog3"></i></a>
+											<a href={{ route('profile',Auth::user()->name) }}><i class="icon-cog3"></i></a>
 										</li>
 									</ul>
 								</div>
@@ -135,61 +137,88 @@
 					<div class="sidebar-category sidebar-category-visible">
 						<div class="category-content no-padding">
 							<ul class="navigation navigation-main navigation-accordion">
-
-								<!-- Main -->
-								<li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
-								<li class="active"><a href={{ route('admin') }}><i class="icon-home4"></i> <span>Dashboard</span></a></li>
-								
-								<li>
-									<a href="#"><i class="icon-bookmark"></i> <span>Matériaux</span></a>
-									<ul>
-										<li><a href="index.html" id="layout1">Layout 1 <span class="label bg-warning-400">Current</span></a></li>
-										<li><a href="../../layout_2/LTR/index.html" id="layout2">Layout 2</a></li>
-										<li><a href="../../layout_3/LTR/index.html" id="layout3">Layout 3</a></li>
-										<li><a href="../../layout_4/LTR/index.html" id="layout4">Layout 4</a></li>
-										<li class="disabled"><a href="../../layout_5/LTR/index.html" id="layout5">Layout 5 <span class="label">Coming soon</span></a></li>
-									</ul>
-								</li>
-								
-								<li>
-									<a href="#"><i class="icon-stack"></i> <span>Starter kit</span></a>
-									<ul>
-										<li><a href="starters/horizontal_nav.html">Horizontal navigation</a></li>
-										<li><a href="starters/1_col.html">1 column</a></li>
-										<li><a href="starters/2_col.html">2 columns</a></li>
-										<li>
-											<a href="#">3 columns</a>
-											<ul>
-												<li><a href="starters/3_col_dual.html">Dual sidebars</a></li>
-												<li><a href="starters/3_col_double.html">Double sidebars</a></li>
-											</ul>
-										</li>
-										<li><a href="starters/4_col.html">4 columns</a></li>
-										<li>
-											<a href="#">Detached layout</a>
-											<ul>
-												<li><a href="starters/detached_left.html">Left sidebar</a></li>
-												<li><a href="starters/detached_right.html">Right sidebar</a></li>
-												<li><a href="starters/detached_sticky.html">Sticky sidebar</a></li>
-											</ul>
-										</li>
+								@if (Auth::user()->role == 'admin')
+										<!-- Main -->
+									<li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
+									<li class="active"><a href={{ route('admin') }}><i class="icon-home4"></i> <span>Control Panel</span></a></li>
+									<li>
+										<a href="#"><i class="icon-bookmark"></i> <span>les matières</span></a>
+										<ul>
+											<li><a href="{{ route('subjects.create') }}" id="layout1">Crèe une matière</a></li>
+										</ul>
+									</li>
 									
-									</ul>
-								</li>
-								<!-- /main -->
+									<li>
+										<a href='#'><i class="icon-stack3"></i> <span>les niveaux</span></a>
+										<ul>
+											<li><a href={{ route('levels.index') }}>Gestion des niveaux</a></li>
+											<li><a href={{ route('levels.create') }}>Créer un niveau</a></li>
+										</ul>
+									</li>
+									<li>
+										<a href='#'><i class=" icon-stack"></i> <span>les classes</span></a>
+										<ul>
+											<li><a href={{ route('sections.create') }}>Créer une classe</a></li>
+										</ul>
+									</li>
+									<li>
+										<a href='#'><i class="icon-book"></i> <span>les Cours</span></a>
+										<ul>
+											<li><a href="{{ route('courses.create') }}" id="layout1">Crèe un cours</a></li>
+										</ul>
+									</li>
+									<li>
+										<a href='#'><i class="icon-file-empty2"></i> <span>les Examens</span></a>
+										<ul>
+											<li><a href="{{ route('courses.create') }}" id="layout1">Crèe un examen</a></li>
+										</ul>
+									</li>
+									<!-- /main -->
 
-								<!-- Forms -->
-								<li class="navigation-header"><span>Forms</span> <i class="icon-menu" title="Forms"></i></li>
-							
-								<li>
-									<a href="#"><i class="icon-users"></i> <span>utilisateurs</span></a>
-									<ul>
-										<li><a href={{ route('users.index') }}> Gestion des utilisateurs
-										</a></li>
+									<!-- Forms -->
+									<li class="navigation-header"><span>Forms</span> <i class="icon-menu" title="Forms"></i></li>
+								
+									<li>
+										<a href="#"><i class="icon-users"></i> <span>les Utilisateurs</span></a>
+										<ul>
+											<li><a href={{ route('users.index') }}> Gestion des utilisateurs
+											</a></li>
 
-										<li><a href={{ route('users.create') }}>Créer un compte </a></li>
-									</ul>
-								</li>
+											<li><a href={{ route('users.create') }}>Créer un compte </a></li>
+										</ul>
+									</li>
+								@endif
+								@if (Auth::user()->role == 'teacher')
+									<li>
+										<a href='#'><i class="icon-book"></i> <span>les Cours</span></a>
+										<ul>
+											<li><a href="{{ route('courses.create') }}" id="layout1">Crèe un cours</a></li>
+										</ul>
+									</li>
+									<li>
+										<a href='#'><i class="icon-file-empty2"></i> <span>les Examens</span></a>
+										<ul>
+											<li><a href="{{ route('courses.create') }}" id="layout1">Crèe un examen</a></li>
+										</ul>
+									</li>
+								@endif
+								{{-- student --}}
+								@if (Auth::user()->role === 'student')
+									<li>
+										<a href='#'><i class="icon-book"></i> <span>les Cours</span></a>
+										<ul>
+											<li><a href="{{ route('learn.subjects') }}" id="layout1">me cours</a></li>
+										</ul>
+									</li>
+									<li>
+										<a href='#'><i class="icon-file-empty2"></i> <span>les Examens</span></a>
+										<ul>
+											<li><a href="{{ route('learn.examsub') }}" id="layout1">me examen</a></li>
+										</ul>
+									</li>
+								@endif
+								
+
 							</ul>
 						</div>
 					</div>
@@ -207,42 +236,35 @@
 				<div class="page-header">
 					<div class="page-header-content">
 						<div class="page-title">
-							<h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Home</span> - Dashboard</h4>
+							<h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Home</span> - {{ str_replace(".", "  -  ", \Route::currentRouteName()); 
+							}}</h4>
 						</div>
 
 						<div class="heading-elements">
 							<div class="heading-btn-group">
-								<a href="#" class="btn btn-link btn-float has-text"><i class="icon-bars-alt text-primary"></i><span>Statistics</span></a>
-								<a href="#" class="btn btn-link btn-float has-text"><i class="icon-calculator text-primary"></i> <span>Invoices</span></a>
-								<a href="#" class="btn btn-link btn-float has-text"><i class="icon-calendar5 text-primary"></i> <span>Schedule</span></a>
-							</div>
+								@if (\Route::currentRouteName() == 'sections.sectionsfind')
+								<a href={{ route('sections.create') }} class="btn btn-link btn-float has-text"><i class="icon-plus3 text-primary"></i><span>Créé une classe</span></a>
+								@else
+								
+								@endif
+								@if (\Route::currentRouteName() == 'subjects.subjectsfind')
+								<a href={{ route('subjects.create') }} class="btn btn-link btn-float has-text"><i class="icon-plus3 text-primary"></i><span>Créé une matiére</span></a>
+								@else
+								
+								@endif
+								
+						</div>
 						</div>
 					</div>
 
 					<div class="breadcrumb-line">
 						<ul class="breadcrumb">
-							<li><a href="index.html"><i class="icon-home2 position-left"></i> Home</a></li>
-							<li class="active">Dashboard</li>
+							<li><a href={{ route('admin') }}><i class="icon-home2 position-left"></i> Home</a></li>
+							<li class="active">{{ str_replace(".", "  /  ", \Route::currentRouteName()); 
+							}}</li>
 						</ul>
 
-						<ul class="breadcrumb-elements">
-							<li><a href="#"><i class="icon-comment-discussion position-left"></i> Support</a></li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="icon-gear position-left"></i>
-									Settings
-									<span class="caret"></span>
-								</a>
-
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li><a href="#"><i class="icon-user-lock"></i> Account security</a></li>
-									<li><a href="#"><i class="icon-statistics"></i> Analytics</a></li>
-									<li><a href="#"><i class="icon-accessibility"></i> Accessibility</a></li>
-									<li class="divider"></li>
-									<li><a href="#"><i class="icon-gear"></i> All settings</a></li>
-								</ul>
-							</li>
-						</ul>
+						
 					</div>
 				</div>
 				<!-- /page header -->
@@ -262,9 +284,7 @@
 
 
 					<!-- Footer -->
-					<div class="footer text-muted">
-						&copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
-					</div>
+					
 					<!-- /footer -->
 
 				</div>

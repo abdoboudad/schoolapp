@@ -36,26 +36,34 @@
                             </tr>
                             <tr>
                                 <td>Nom Complete</td>
-                                <td>{{ $user->name }}</td>
+                                <td>{{ $student->name }}</td>
                             </tr>
                             <tr class="danger">
                                 <td>Adresse Email</td>
-                                <td>{{ $user->email }}</td>
+                                <td>{{ $student->email }}</td>
+                            </tr>
+                            <tr class="secondary">
+                                <td>Adresse Email</td>
+                                <td>{{ $student->level }}</td>
+                            </tr>
+                            <tr style="background-color: rgb(230, 230, 230);">
+                                <td>Adresse Email</td>
+                                <td>{{ $student->sections->name }}</td>
                             </tr>
                             <tr>
                                 <td>Date de création</td>
-                                <td>{{ $user->created_at }}</td>
+                                <td>{{ $student->created_at }}</td>
                             </tr>
                             <tr class="warning">
                                 <td>Date de mise à jour</td>
-                                <td>{{ $user->updated_at }}</td>
+                                <td>{{ $student->updated_at }}</td>
                             </tr>       
                         </tbody>
                     </table>
                 </div>
 
                 <div class="tab-pane" id="basic-justified-tab2">
-                    <form action="{{ route('profile.updatePassword') }}" method="post">
+                    <form action="{{ route('students.pupdate') }}" method="post">
                         @csrf
                         <div class="form-group">
                             <label class="control-label col-lg-12">ancien mot de passe</label>

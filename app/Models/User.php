@@ -24,6 +24,8 @@ class User extends Authenticatable
         'status',
         'role',
         'phone',
+        'level',
+        'section_id'
     ];
 
     /**

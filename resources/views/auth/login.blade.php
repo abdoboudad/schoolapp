@@ -50,7 +50,7 @@
 						<div class="panel panel-body login-form">
 							<div class="text-center">
 								<div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
-								<h5 class="content-group">Login to your account <small class="display-block">Enter your credentials below</small></h5>
+								<h5 class="content-group">Connectez-vous au site</h5>
 							</div>
 
 							<div class="form-group has-feedback has-feedback-left">
@@ -66,7 +66,7 @@
 							</div>
 
 							<div class="form-group has-feedback has-feedback-left">
-								<input type="text" name="password" class="form-control" placeholder="Password">
+								<input type="password" name="password" class="form-control" placeholder="Password">
 								<div class="form-control-feedback">
 									<i class="icon-lock2 text-muted"></i>
 								</div>
@@ -88,9 +88,7 @@
 
 
 					<!-- Footer -->
-					<div class="footer text-muted">
-						&copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
-					</div>
+			
 					<!-- /footer -->
 
 				</div>

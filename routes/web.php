@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\LearnController;
+use App\Http\Controllers\LevelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SectionController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -21,13 +26,40 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+    Route::get('/', [AdminController::class,'index'])->name('admin');
+    Route::post('status/{id}', [ProfileController::class,'status'])->name('status');
+    Route::get('user/profile/{name}', [ProfileController::class,'profile'])->name('profile');
 
-Route::get('admin', [AdminController::class,'index'])->name('admin');
-Route::post('admin/status/{id}', [ProfileController::class,'status'])->name('status');
-Route::get('user/profile/{name}', [ProfileController::class,'profile'])->name('profile');
+    Route::resource('users',UserController::class);
+    Route::post('profile/updatePassword',[ProfileController::class,'updatePassword'])->name('profile.updatePassword');
 
-Route::resource('admin/users',UserController::class);
-Route::resource('admin/courses',CoursesController::class);
+    Route::resource('courses',CoursesController::class);
+    Route::get('courses/fetch/{id}',[CoursesController::class,'fetch'])->name('courses.fetch');
+    Route::get('courses/getcourses/{id}',[CoursesController::class,'courses'])->name('courses.getcourses');
+    Route::get('courses/getexams/{id}',[CoursesController::class,'exams'])->name('courses.exams');
+    
+    Route::resource('levels',LevelController::class);
+    
+    Route::resource('sections',SectionController::class);
+    Route::get('sections/sectionsfind/{id}',[SectionController::class,'sectionsfind'])->name('sections.sectionsfind');
+    Route::get('sections/fetchdata/{id}',[SectionController::class,'fetchdata'])->name('sections.fetchdata');
+    
+    Route::resource('subjects',SubjectController::class);
+    Route::get('subjects/subjectsfind/{id}',[SubjectController::class,'subjectsfind'])->name('subjects.subjectsfind');
+    
+    Route::get('learn/subjects',[LearnController::class,'subjects'])->name('learn.subjects');
+    Route::get('learn/courses/{id}',[LearnController::class,'courses'])->name('learn.courses');
+    Route::get('learn/examsub',[LearnController::class,'examsub'])->name('learn.examsub');
+    Route::get('learn/exams/{id}',[LearnController::class,'exams'])->name('learn.exams');
+});
+
+
+
+
+
+
+
 
 Auth::routes();
 

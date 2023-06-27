@@ -3,64 +3,124 @@
 namespace App\Http\Controllers;
 
 use App\Models\Courses;
-use App\Http\Controllers\Controller;
+use App\Models\Level;
+use App\Models\Subject;
+use App\Traits\FileTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CoursesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use FileTrait;
+    protected $auth;
+
+    public function __construct(Auth $auth)
+    {
+        $this->auth = $auth;
+    }
     public function index()
     {
-        //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('admin.courses.create');
+        $subjects = Subject::all();
+        $levels = Level::all();
+        return view('admin.courses.create', compact('subjects','levels'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'file' => 'max:2048',
+            'level'=>'required',
+            'type'=>'required',
+            'subject_id' => 'required', 
+        ]);
+        $thumbnail = $this->getData($request,'thumbnail');
+        $img = $this->getData($request,'imgs');
+        $file = $this->getData($request,'docs');
+
+        Courses::create([
+            'title'=>$request->title,
+            'type'=>$request->type,
+            'thumbnail'=>$thumbnail,
+            'photo'=>$img,
+            'file'=>$file != null ? implode('',$file) : '',
+            'link'=>$request->link,
+            'text'=>$request->text,
+            'status'=>$request->status != null ? $request->status : 'not active',
+            'subject_id'=>$request->subject_id,
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Lesson crèe avec succès.');
+        return $img;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Courses $courses)
+    public function show(Courses $lesson)
     {
-        //
+        return view('lessons.show', compact('lesson'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Courses $courses)
+    public function edit(Courses $lesson,$id)
     {
-        //
+        $levels = Level::all();
+        $course = Courses::findOrFail($id);
+        return view('admin.courses.edit', compact('course', 'levels'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Courses $courses)
+    public function update(Request $request,$id)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'level'=>'required',
+            'type'=>'required',
+            'subject_id' => 'required', 
+        ]);
+        $thumbnail = $this->getData($request,'thumbnail');
+        $img = $this->getData($request,'imgs');
+        $file = $this->getData($request,'docs');
+
+        Courses::findOrFail($id)->update([
+            'title'=>$request->title,
+            'type'=>$request->type,
+            'thumbnail'=>$thumbnail,
+            'photo'=>$img,
+            'file'=>$file != null ? implode('',$file) : '',
+            'link'=>$request->link,
+            'text'=>$request->text,
+            'status'=>$request->status != null ? $request->status : 'not active',
+            'subject_id'=>$request->subject_id,
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Lesson modifier avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Courses $courses)
+    public function destroy(Courses $lesson,$id)
     {
-        //
+        Courses::findOrFail($id)->delete();
+
+        return redirect()->back()
+            ->with('success', 'Lesson supprimer avec succès.');
+    }
+    public function fetch($id){
+        header('Access-Control-Allow-Origin: *');
+        $sections = Level::find($id)->subjects;
+        return response()->json($sections);
+    }
+    public function courses($id){
+        $courses = Subject::findOrFail($id)->courses;
+        return view('admin.courses.index',compact('courses'));
+    }
+    public function exams($id){
+        $courses = Subject::findOrFail($id)->courses;
+        return view('admin.exams.index',compact('courses'));
     }
 }
